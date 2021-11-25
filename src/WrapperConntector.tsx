@@ -1,5 +1,5 @@
-import React, {useEffect, useMemo, useState} from "react";
-import {storedField, Wrapper, WrapperInstance} from "./types";
+import React, {useEffect, useMemo, useRef, useState} from "react";
+import {field, fieldInstance, fieldWithRef, storedField, Wrapper, WrapperInstance} from "./types";
 
 
 /*
@@ -30,13 +30,17 @@ export default React.forwardRef(WrapperConntector)
 
 const WrapperConntector : React.FC<WrapperInstance> =  (props)  => {
 
-
     const [fieldProps , setFieldProps] = useState<storedField>(React.isValidElement(props.children) ? props.children.props : {})
+    // field ref
+    const fieldRef = useRef()
 
     const Wrapper  : Wrapper= useMemo<Wrapper>(() => ({
         on : (field) => {
             setFieldProps(field)
         },
+        ref : () => {
+            return fieldRef.current
+        }
     }), [])
 
     useEffect(() => {
@@ -46,7 +50,7 @@ const WrapperConntector : React.FC<WrapperInstance> =  (props)  => {
 
     const render = () => {
         if(React.isValidElement(props.children))
-            return React.cloneElement(props.children , {...fieldProps } )
+            return React.cloneElement(props.children, {...fieldProps  , ref : fieldRef}   )
         throw new Error('wrapper Error')
     }
 

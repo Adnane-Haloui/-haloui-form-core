@@ -2,13 +2,19 @@ import React from "react";
 import {FormStore} from "../actions";
 // generic Types
 export type arrayValue = (string | number)[];
-export type value = string | Date | number | arrayValue
+export type value = string | Date | number | arrayValue | undefined
 export type eventCallBack = <T extends {uuid: string , value: value }| string | undefined>(event : T) => void
+export type middleware = (field : field ) => field
+
+// validation
+export type validation = string | ((value : value) => boolean)
+
 
 export type FormStoreType = typeof FormStore
 
 export interface Wrapper {
     on:(field: storedField) => void,
+    ref:() => any
     //get : () => storedField;
 }
 export type WrapperInstance = {
@@ -16,7 +22,7 @@ export type WrapperInstance = {
     children?:React.ReactNode
 }
 export type  storeElement = {
-    field : storedField,
+    field : field,
     Wrapper : Wrapper
 }
 export type store = Record<string, storeElement>
@@ -29,14 +35,20 @@ export interface storedField {
     uuid:string,
     defaultValue?:value,
     value?:value,
-    helpIndicator?:boolean
+    helpIndicator?:boolean,
+    visibility?:boolean,
+    // error
+    errorHandling?:boolean,
+    ShowInstantError?:boolean,
 }
 export interface field extends storedField{
     colorTheme?: string,
     // error
-    errorHandling?:true,
-    ShowInstantError?:false,
+    errorHandling?:boolean,
+    ShowInstantError?:boolean,
     dispatch?:(field : storedField) => void,
+    // validation
+    validation?:validation
 }
 
 export interface fieldInstance {
@@ -50,16 +62,18 @@ export type formConfig = {
     // UUI
     defaultColorTheme?:string,
     // error
-    errorHandling?:true,
-    ShowInstantError?:false,
-    scrollToFirstError?:false
+    errorHandling?:boolean,
+    ShowInstantError?:boolean,
+    scrollToFirstError?:boolean
 }
 export interface formInstance {
-    submit : () => storedField[],
+    submit : (formattedField?:() => any) => storedField[],
     checkInstance : () => boolean,
     forceUpdate : () => void,
     emit: (field : storeElement) => void,
-    dispatch:(field : storedField) => void,
+    dispatch:(field : storedField | storedField[]) => void,
+    scrollTo:(field : storedField) => void,
+    setMiddlewares:(middlewares : middleware[]) => void
     //on : (uuid : string, callback : (field : storedField) => void) => void,
 }
 export interface formRequired {

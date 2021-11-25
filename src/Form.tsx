@@ -1,6 +1,7 @@
-import {formRequired, formInstance, value} from './types'
+import {formRequired, formInstance, value, field} from './types'
 import React, {forwardRef, MutableRefObject, useEffect, useImperativeHandle, useMemo, useRef} from "react";
 import { useForm , hasChildren} from "./actions";
+
 
 
 const Form : React.ForwardRefRenderFunction<formInstance,formRequired> = (formRequired, formRef) => {
@@ -17,6 +18,15 @@ const Form : React.ForwardRefRenderFunction<formInstance,formRequired> = (formRe
     // test re rendring
     useEffect(() => {console.log('hello form Re rendring' , formMemo)})
 
+
+    useEffect(() => {
+        console.log('hellooo ')
+        /*formMemo.dispatch({uuid :'15' , value: 'helloo '
+            , helpIndicator : true , type : 'mdj' , errorHandling:true, ShowInstantError:true})*/
+
+        // destroy form Instance
+    },[])
+
     useImperativeHandle(currentRef , () => formMemo)
 
     const handle = () => {
@@ -27,7 +37,7 @@ const Form : React.ForwardRefRenderFunction<formInstance,formRequired> = (formRe
 
     const render = () : React.ReactNode => {
         if(formRequired.children)
-            return hasChildren(formRequired.children,formMemo)
+            return hasChildren(formRequired.children,formMemo ) // defaultProps
         if(formRequired.fields)
             return (<div>hello</div>)
         throw new Error('no fields or children is defined')
