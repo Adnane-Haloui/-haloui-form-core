@@ -77,7 +77,7 @@ export interface formInstance {
     //on : (uuid : string, callback : (field : storedField) => void) => void,
 }
 export interface formRequired {
-    form?:formInstance,
+    form:formInstance,
     fields?: field[],
     children?: React.ReactNode,
     config?: formConfig,
@@ -86,3 +86,5 @@ export interface formRequired {
     // did mount
     didFormMount?: () => void
 }
+
+

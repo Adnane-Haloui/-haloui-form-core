@@ -1,35 +1,41 @@
-//import babel from 'rollup-plugin-babel'
-import commonjs from 'rollup-plugin-commonjs'
-import external from 'rollup-plugin-peer-deps-external'
-import resolve from 'rollup-plugin-node-resolve'
-import url from 'rollup-plugin-url'
-import replace from "rollup-plugin-replace";
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import typescript from '@rollup/plugin-typescript';
+import { terser } from 'rollup-plugin-terser';
+import external from 'rollup-plugin-peer-deps-external';
+import dts from 'rollup-plugin-dts';
 
-//import pkg from './package.json'
 
-export default {
-    input: 'dist/app.js',
-    output: [
-        {
-            file: 'dist/bundle.js',
-            format: 'iife',
-            sourcemap: true,
-        }
-    ],
-    plugins: [
-        replace({
-            'process.env.NODE_ENV': JSON.stringify( 'production' )
-        }),
-        external(),
-        /*postcss({
-            modules: false,
-        }),*/
-        url(),
-        /*babel({
-            exclude: 'node_modules/**',
-            plugins: ['external-helpers'],
-        }),*/
-        resolve(),
-        commonjs(),
-    ],
-}
+
+const packageJson = require('./package.json');
+
+
+export default [
+    {
+        input: 'src/index.ts',
+        output: [
+            {
+                file: packageJson.main,
+                format: 'cjs',
+                sourcemap: true,
+            },
+            {
+                file: packageJson.module,
+                format: 'esm',
+                sourcemap: true
+            }
+        ],
+        plugins: [
+            external(),
+            resolve(),
+            commonjs(),
+            typescript({ tsconfig: './tsconfig.json' }),
+            terser()
+        ],
+    },
+   {
+        input: 'dist/types/index.d.ts',
+        output: [{ file: 'dist/index.d.ts', format: "esm" }],
+        plugins: [dts()],
+    },
+]

@@ -1,5 +1,5 @@
 import React from "react";
-import {field, formInstance, storedField, Wrapper} from "../../types";
+import {formInstance} from "../../types";
 import WrapperConntector from "../../WrapperConntector";
 
 

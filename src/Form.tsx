@@ -1,11 +1,14 @@
-import {formRequired, formInstance, value, field} from './types'
-import React, {forwardRef, MutableRefObject, useEffect, useImperativeHandle, useMemo, useRef} from "react";
+import {formRequired, formInstance} from './types'
+import React, {
+    MutableRefObject,
+    useEffect,
+    useImperativeHandle,
+    useMemo,
+    useRef
+} from "react";
 import { useForm , hasChildren} from "./actions";
 
-
-
-const Form : React.ForwardRefRenderFunction<formInstance,formRequired> = (formRequired, formRef) => {
-
+const Form = React.forwardRef<formInstance,formRequired>((formRequired, formRef) => {
     const currentRef = useRef<formInstance>()
 
     const formMemo = useMemo<formInstance>(() => {
@@ -28,12 +31,12 @@ const Form : React.ForwardRefRenderFunction<formInstance,formRequired> = (formRe
     },[])
 
     useImperativeHandle(currentRef , () => formMemo)
-
+    /*
     const handle = () => {
         //console.log(formRequired.form)
         if(formRequired.onChangeValue)
             formRequired.onChangeValue({uuid:'1',value:[1,2]})
-    }
+    }*/
 
     const render = () : React.ReactNode => {
         if(formRequired.children)
@@ -47,7 +50,9 @@ const Form : React.ForwardRefRenderFunction<formInstance,formRequired> = (formRe
             {render()}
         </>
     )
+})
+
+export  {
+    Form
 }
 
-
-export default forwardRef(Form)

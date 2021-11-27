@@ -10,16 +10,18 @@ export class FormStore implements formInstance{
 
     private middlewares :  middleware[] = []
     private store: store= {}
-    private reflexions : reflexion[] = []
+    //private reflexions : reflexion[] = []
 
     constructor() {
         //super(props);
+        /*
         this.reflexions = [(field, o_field) => {
             if (field.type === 'radio' && o_field.uuid === '15'){
                 o_field.value = '12DD'
                 return o_field
             }
-        }]
+            return field
+        }]*/
     }
     // set
     setForceRootUpdate( forceRootUpdate : () => void):void{
@@ -75,11 +77,11 @@ export class FormStore implements formInstance{
         })
         this.store[field.uuid].Wrapper.on(this.store[field.uuid].field)
         // Reflexions
-        if(this.reflexions){
+        /*if(this.reflexions){
             this.reflexions.map(reflexion => {
                this.dispatch(this._applyReflexion(field, reflexion))
             })
-        }
+        }*/
     }
     private _applyMiddleware(field:field): field{
         let _prev : field = field
