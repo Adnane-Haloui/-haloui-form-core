@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "rootDir": "src",
+    "baseUrl": "src",
     "declaration": true,
     "declarationDir": "types",
     "module": "esnext",
@@ -11,6 +11,5 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
-  },
-  "include": ["src/**/*"]
+  }
 }

@@ -1,4 +1,5 @@
 import {formRequired, formInstance} from './types'
+
 import React, {
     MutableRefObject,
     useEffect,
@@ -8,7 +9,7 @@ import React, {
 } from "react";
 import { useForm , hasChildren} from "./actions";
 
-const Form = React.forwardRef<formInstance,formRequired>((formRequired, formRef) => {
+const _Form : React.ForwardRefRenderFunction<formInstance,formRequired> = ((formRequired, formRef) => {
     const currentRef = useRef<formInstance>()
 
     const formMemo = useMemo<formInstance>(() => {
@@ -52,7 +53,11 @@ const Form = React.forwardRef<formInstance,formRequired>((formRequired, formRef)
     )
 })
 
+
+
+
+
 export  {
-    Form
+    _Form,
 }
 
